@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer,RoomSerializer,AmenitySerializer,FeatureSerializer,ReservationSerializer,UserSerializer
+from .serializers import CustomTokenObtainPairSerializer,RoomSerializer,AmenitySerializer,FeatureSerializer,ReservationSerializer,UserSerializer,SingleRoomSerializer
 from .models import Room,Feature,Amenity,Reservation
 from rest_framework import status
 from django.db import transaction
@@ -23,7 +23,7 @@ class SingleRoomView(APIView):
   def get(self,request,pk):
     room=Room.objects.get(id=pk)
     
-    roomserializer=RoomSerializer(room)
+    roomserializer=SingleRoomSerializer(room)
     
     return Response(roomserializer.data,status=status.HTTP_200_OK)
     
@@ -50,7 +50,8 @@ class CheckReservationView(APIView):
   permission_classes=[IsAuthenticated]
   def get(self,request):
     reservations=Reservation.objects.filter(user=request.user)
-    
+    for reservation in reservations:
+      reservation.check_expired()
     reservationserilizer=ReservationSerializer(reservations,many=True)
     
     return Response(reservationserilizer.data,status=status.HTTP_200_OK)

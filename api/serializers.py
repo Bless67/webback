@@ -21,7 +21,7 @@ class RoomImageSerializer(serializers.ModelSerializer):
     model=RoomImage
     exclude=["room"]
 
-class RoomSerializer(serializers.ModelSerializer):
+class SingleRoomSerializer(serializers.ModelSerializer):
   room_features=FeatureSerializer(many=True)
   room_amenities=AmenitySerializer(many=True)
   images=RoomImageSerializer(many=True)
@@ -33,12 +33,19 @@ class RoomData(serializers.ModelSerializer):
   class Meta:
     model=Room
     fields=["id","room_name"]
+    
+class RoomSerializer(serializers.ModelSerializer):
+  images=RoomImageSerializer(many=True)
+  class Meta:
+    model=Room
+    fields=["id","room_name","room_price","room_type","images"]
+    
 
 class ReservationSerializer(serializers.ModelSerializer):
     room=RoomData(read_only=True)
     class Meta:
         model = Reservation
-        fields=["id","room","checkin_date","checkout_date"]
+        fields=["id","room","checkin_date","checkout_date","is_expired"]
 
     def validate(self, data):
         checkin_date = data.get('checkin_date')

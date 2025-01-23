@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 class Amenity(models.Model):
   AMENITY_CATEGORIES=[
@@ -60,6 +61,15 @@ class Reservation(models.Model):
   room=models.ForeignKey(Room,on_delete=models.CASCADE,related_name="room")
   checkin_date=models.DateField()
   checkout_date=models.DateField()
+  is_expired=models.BooleanField(default=False)
+  
+  def check_expired(self):
+    today = date.today()
+    if self.checkout_date < today and not self.is_expired:
+      self.room.room_status="Available"
+      self.is_expired=True 
+      self.room.save()
+      self.save()
   
   def __str__(self):
     return f"Reservation for room {self.room} by {self.user}"

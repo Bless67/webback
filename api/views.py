@@ -21,8 +21,10 @@ class RoomView(APIView):
 class SingleRoomView(APIView):
   permission_classes=[AllowAny]
   def get(self,request,pk):
-    room=Room.objects.get(id=pk)
-    
+    try:
+      room=Room.objects.get(id=pk)
+    except Room.DoesNotExist:
+      return Response({"error":"room not found"},status=status.HTTP_404_NOT_FOUND)
     roomserializer=SingleRoomSerializer(room)
     
     return Response(roomserializer.data,status=status.HTTP_200_OK)

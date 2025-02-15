@@ -70,6 +70,12 @@ class Reservation(models.Model):
       self.is_expired=True 
       self.room.save()
       self.save()
+      
+    if self.checkout_date > today and self.is_expired:
+      self.is_expired=False
+      self.room.room_status="Booked"
+      self.room.save()
+      self.save()
   
   def __str__(self):
     return f"Reservation for room {self.room} by {self.user}"

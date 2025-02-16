@@ -85,8 +85,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 CSRF_TRUSTED_ORIGINS = ["https://web-production-186a.up.railway.app/"]
-CSRF_COOKIE_SECURE = False  # Temporary for debugging
-SESSION_COOKIE_SECURE = False  # Temporary for debugging
+CSRF_COOKIE_SECURE = True  # Temporary for debugging
+SESSION_COOKIE_SECURE = True # Temporary for debugging
 
 DATABASES = {
     'default': dj_database_url.config(

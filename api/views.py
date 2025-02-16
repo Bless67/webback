@@ -6,7 +6,10 @@ from .serializers import CustomTokenObtainPairSerializer,RoomSerializer,AmenityS
 from .models import Room,Feature,Amenity,Reservation
 from rest_framework import status
 from django.db import transaction
+from django.http import HttpResponse
 
+def html_view(request):
+    return HttpResponse("<h1>Welcome to My Site</h1>")
 class CustomTokenObtainPairView(TokenObtainPairView):
   serializer_class=CustomTokenObtainPairSerializer
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
+from cloudinary.models import CloudinaryField
 
 class Amenity(models.Model):
   AMENITY_CATEGORIES=[
@@ -52,7 +53,7 @@ class Room(models.Model):
     
 class RoomImage(models.Model):
   room=models.ForeignKey(Room,related_name="images",on_delete=models.CASCADE)
-  image=models.ImageField()
+  image=CloudinaryField("image")
   def __str__(self):
     return f"for {self.room.room_name}"
   

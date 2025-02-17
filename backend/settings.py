@@ -2,6 +2,9 @@ from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,7 +33,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
-    "api"
+    "api",
+    'cloudinary',
+  
 ]
 
 MIDDLEWARE = [
@@ -145,6 +150,15 @@ CORS_ALLOW_CREDENTIALS=True
 CORS_ALLOW_ALL_ORIGINS=True
 
 
-MEDIA_URL="images/"
 
-MEDIA_ROOT=os.path.join(BASE_DIR,"images")
+
+# Add Cloudinary configurations
+cloudinary.config( 
+  cloud_name = "db2tiupnj", 
+  api_key = "955136957446634", 
+  api_secret = "nXJTalGhTtGJ25JRwLuMBOxPPfc"
+)
+
+# Use Cloudinary for media storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+

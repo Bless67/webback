@@ -5,19 +5,23 @@ import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-from decouple import config
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-gi)5sl97kaf_0)kf6jr^dqf6^*%7%dekfvh+2iq2(amgxv+r&3"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =False
+DEBUG =True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -91,14 +95,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 CSRF_TRUSTED_ORIGINS = [
-  "https://web-production-186a.up.railway.app"
+  env("TRUSTED_ORIGIN")
 ]
 CSRF_COOKIE_SECURE = True  # Temporary for debugging
 SESSION_COOKIE_SECURE = True # Temporary for debugging
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgresql://postgres:wpxzmLpurhGojYiRbMmZCAzSKaoJeDKz@nozomi.proxy.rlwy.net:50619/railway",
+        default=env("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True  # Set to False if not using SSL
     )
@@ -153,9 +157,9 @@ CORS_ALLOW_ALL_ORIGINS=True
 
 # Add Cloudinary configurations
 cloudinary.config( 
-  cloud_name = "db2tiupnj", 
-  api_key = "955136957446634", 
-  api_secret = "nXJTalGhTtGJ25JRwLuMBOxPPfc"
+  cloud_name = env("CLOUD_NAME"), 
+  api_key = env("API_KEY"), 
+  api_secret = env("API_SECRET")
 )
 
 # Use Cloudinary for media storage

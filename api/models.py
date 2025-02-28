@@ -64,6 +64,12 @@ class Reservation(models.Model):
   checkout_date=models.DateField()
   is_expired=models.BooleanField(default=False)
   
+  def delete(self,*args,**kwargs):
+    if(self.room.room_status=="Booked"):
+      self.room.room_status="Available"
+      self.room.save()
+    super().delete(*args,**kwargs)
+    
   def check_expired(self):
     today = date.today()
     if self.checkout_date < today and not self.is_expired:

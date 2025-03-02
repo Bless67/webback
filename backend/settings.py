@@ -18,10 +18,10 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-gi)5sl97kaf_0)kf6jr^dqf6^*%7%dekfvh+2iq2(amgxv+r&3"
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
+DEBUG =False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -102,7 +102,7 @@ SESSION_COOKIE_SECURE = True # Temporary for debugging
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgresql://postgres:wpxzmLpurhGojYiRbMmZCAzSKaoJeDKz@nozomi.proxy.rlwy.net:50619/railway",
+        default=env('DATABASE_URL'),
         conn_max_age=600,
         ssl_require=True  # Set to False if not using SSL
     )
@@ -144,8 +144,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT=os.path.join(BASE_DIR,"staticfiles")
-# Default primary key field type
+STATIC_ROOT=BASE_DIR/ 'staticfiles'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Default primry key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -157,12 +159,11 @@ CORS_ALLOW_ALL_ORIGINS=True
 
 # Add Cloudinary configurations
 cloudinary.config( 
-  cloud_name = "db2tiupnj",
-  api_key = "955136957446634",
-  api_secret = "nXJTalGhTtGJ25JRwLuMBOxPPfc"
+  cloud_name = env('CLOUD_NAME'),
+  api_key = env('API_KEY'),
+  api_secret = env('API_SECRET')
 )
 
 # Use Cloudinary for media storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
